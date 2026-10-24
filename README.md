@@ -17,11 +17,32 @@
 
 
 ## Methodology
-
+![v1](asset/data_modeling.png)
 
 ## Visualization
 
-![v1](#Visualization)
+**Overall Operations**
+![v1](asset/01.png)
+
+
+**Delivery Perdormance**
+![v1](asset/02.png)
+
+
+**Fleet Perdormance**
+![v1](asset/03.png)
+
+
+**Driver Perdormance**
+![v1](asset/04.png)
+
+
+**Driver Safety**
+![v1](asset/05.png)
+
+
+**Profitability & Cost Efficiency**
+![v1](asset/06.png)
 
 ## Insights
 
