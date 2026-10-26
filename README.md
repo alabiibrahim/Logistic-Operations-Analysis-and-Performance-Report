@@ -123,82 +123,13 @@ A Power BI report for a trucking (logistics) company. It answers five groups of 
 
 ---
 
-## 3. Step 1: Build the data model
+## Build the data model
 
-### 3.1 The simple idea
+ - **Dimension tables** are lists of things: drivers, trucks, customers, routes, facilities, dates.
+ - **Fact tables** record events: trips, deliveries, fuel purchases, repairs, incidents.
+ - All are **one-to-many**, filter direction **single** (from the list table to the event table).
 
-Tables come in two kinds:
-
-- **Dimension tables** are lists of things: drivers, trucks, customers, routes, facilities, dates.
-- **Fact tables** record events: trips, deliveries, fuel purchases, repairs, incidents.
-
-A **relationship** joins a dimension to a fact table by an ID column. When you click one driver, the relationship lets Power BI filter every fact table to just that driver.
-
-### 3.2 Table roles
-
-| Role | Tables |
-|---|---|
-| Dimensions | `customers`, `routes`, `drivers`, `trucks`, `trailers`, `facilities`, `dim_date`, `dim_delivery_date` |
-| Hub fact (the center) | `trips` |
-| Parent of the hub | `loads` (holds revenue, customer and route) |
-| Event facts | `delivery_events`, `fuel_purchases`, `maintenance_records`, `safety_incidents` |
-| Monthly summaries | `driver_monthly_metrics`, `truck_utilization_metrics` |
-
-### 3.3 The shape of the model
-
-```text
-customers ─┐
-routes ────┴─► loads ─► trips ◄─ drivers
-                         │  ▲ ◄─ trucks
-                         │  └─── trailers
-                         │       dim_date (dispatch date)
-                         ▼
-                  delivery_events ◄─ facilities
-                         ▲
-                  dim_delivery_date (scheduled date)
-
-trucks / drivers / dim_date ─► fuel_purchases
-trucks / dim_date ─────────► maintenance_records
-trucks / drivers / routes / dim_date ─► safety_incidents
-trucks / dim_date ─────────► truck_utilization_metrics
-drivers / dim_date ────────► driver_monthly_metrics
-```
-
-### 3.4 Relationships
-
-All are **one-to-many**, filter direction **single** (from the list table to the event table).
-
-| From (one) | To (many) | Key | Active? |
-|---|---|---|---|
-| `customers` | `loads` | customer_id | Yes |
-| `routes` | `loads` | route_id | Yes |
-| `loads` | `trips` | load_id | Yes |
-| `drivers` | `trips` | driver_id | Yes |
-| `trucks` | `trips` | truck_id | Yes |
-| `trailers` | `trips` | trailer_id | Yes |
-| `dim_date` | `trips` | dispatch_date | Yes |
-| `trips` | `delivery_events` | trip_id | Yes |
-| `facilities` | `delivery_events` | facility_id | Yes |
-| `dim_delivery_date` | `delivery_events` | scheduled_date | Yes |
-| `dim_delivery_date` | `delivery_events` | actual_date | **No** |
-| `trucks` | `fuel_purchases` | truck_id | Yes |
-| `drivers` | `fuel_purchases` | driver_id | Yes |
-| `trips` | `fuel_purchases` | trip_id | **No** |
-| `dim_date` | `fuel_purchases` | purchase_date | Yes |
-| `trucks` | `maintenance_records` | truck_id | Yes |
-| `dim_date` | `maintenance_records` | maintenance_date | Yes |
-| `trucks` | `safety_incidents` | truck_id | Yes |
-| `drivers` | `safety_incidents` | driver_id | Yes |
-| `trips` | `safety_incidents` | trip_id | **No** |
-| `dim_date` | `safety_incidents` | incident_date | Yes |
-| `routes` | `safety_incidents` | route_id (a column we add, see 3.6) | Yes |
-| `trucks` | `truck_utilization_metrics` | truck_id | Yes |
-| `dim_date` | `truck_utilization_metrics` | month | Yes |
-| `drivers` | `driver_monthly_metrics` | driver_id | Yes |
-| `dim_date` | `driver_monthly_metrics` | month | Yes |
-| `dim_date` | `loads` | load_date | **No** |
-
-Power BI shows inactive relationships as dotted lines.
+![v1](asset/data_modeling.png)
 
 ### 3.5 Why it is built this way
 
@@ -216,12 +147,6 @@ Power BI shows inactive relationships as dotted lines.
 **Empty measures table:** Home > Enter data, create a table called `_Measures`, then hide its blank column. All measures live here.
 
 ---
-
-## 4. Step 2: Write the DAX measures
-
-
-
-
 
 
 ### 4.5 Key definitions
@@ -466,8 +391,6 @@ The monthly summary tables (`driver_monthly_metrics`, `truck_utilization_metrics
 ## Processing
 
 
-## Methodology
-![v1](asset/data_modeling.png)
 
 ## Visualization
 
