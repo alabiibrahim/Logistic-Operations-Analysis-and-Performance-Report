@@ -1,6 +1,11 @@
+# Objective
+
+An interactive Power BI report that shows how a trucking company performs across operations, deliveries, fleet, drivers and safety, and profitability. The aim is to give managers a clear, filterable view of the operation, so they can find where to look closer and make decisions based on data.
+
+
+
 ## Table of contents
 
-- [Objective](#Objective)
 - [Question](#Questions)
 - [Tools](#Tools)
 - [Processing](#Processing)
@@ -10,9 +15,6 @@
 - [Insights](#Insights)
 - [Recommendations](#Recommendations)
 
-## Objective
-
-A Power BI report for a trucking (logistics) company. It answers five groups of questions. Each group is one **section** of the report.
 
 ### Questions 
 
