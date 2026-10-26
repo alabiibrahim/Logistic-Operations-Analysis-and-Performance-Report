@@ -1,12 +1,5 @@
 # Logistic-Operations-and-Report-Analysis
 
-A step-by-step record of how this report was built, from raw tables to finished pages.
-
-> **What this document covers:** the data model, the DAX measures, the visuals, the page design and how everything was checked.
-> **What it does not cover (yet):** insights and recommendations. Those will be added separately.
-
----
-
 ## Table of contents
 - [Question](#Questions)
 - [Processing](#Processing)
