@@ -1,5 +1,3 @@
-# Logistic-Operations-and-Report-Analysis
-
 ## Table of contents
 
 - [Objective](#Objective)
