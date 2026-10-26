@@ -10,6 +10,7 @@ A step-by-step record of how this report was built, from raw tables to finished 
 ## Table of contents
 - [Question](#Questions)
 - [Processing](#Processing)
+- [Data model](#Data-model)
 - [Methodology](#Methodology)
 - [Visualization](#Visualization)
 - [Insights](#Insights)
@@ -18,8 +19,7 @@ A step-by-step record of how this report was built, from raw tables to finished 
 
 
 1. [What this project is](#1-what-this-project-is)
-2. [The rules we followed](#2-the-rules-we-followed)
-3. [Step 1: Build the data model](#3-step-1-build-the-data-model)
+ 
 4. [Step 2: Write the DAX measures](#4-step-2-write-the-dax-measures)
 5. [Step 3: Build the visuals](#5-step-3-build-the-visuals)
 7. [How we checked our work](#7-how-we-checked-our-work)
