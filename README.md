@@ -22,12 +22,10 @@ A step-by-step record of how this report was built, from raw tables to finished 
 3. [Step 1: Build the data model](#3-step-1-build-the-data-model)
 4. [Step 2: Write the DAX measures](#4-step-2-write-the-dax-measures)
 5. [Step 3: Build the visuals](#5-step-3-build-the-visuals)
-6. [Page design and background images](#6-page-design-and-background-images)
 7. [How we checked our work](#7-how-we-checked-our-work)
 8. [Problems we hit and how we fixed them](#8-problems-we-hit-and-how-we-fixed-them)
 9. [Project files](#9-project-files)
 10. [Rebuild checklist](#10-rebuild-checklist)
-11. [Glossary](#11-glossary)
 
 ---
 
@@ -43,22 +41,49 @@ A Power BI report for a trucking (logistics) company. It answers five groups of 
 | **D** | Driver Performance & Safety | Which drivers perform well, and where are the safety risks? |
 | **E** | Profitability & Cost Efficiency | Where is revenue earned efficiently, and where do costs leak? |
 
-### Questions each section must answer
+### Questions 
 
-**A. Overall Operations:** How many loads and trips are completed? What is total revenue? What is the on-time delivery rate? How well are trucks and drivers used? Are the KPIs getting better or worse over time?
+1.  Overall Operations
+    - How many loads and trips are completed?
+    - What is total revenue?
+    - What is the on-time delivery rate?
+    - How well are trucks and drivers used?
+    - Are the KPIs getting better or worse over time?
 
-**B. Delivery Performance:** What percent of deliveries are on time? Which facilities have the most detention and delays? Which routes do best and worst? Which customers see the most delays? How much time is lost to detention? Are delays bunched in certain places, days or periods?
+2.  Delivery Performance
+    - What percent of deliveries are on time?
+    - Which facilities have the most detention and delays?
+    - Which routes do best and worst? Which customers see the most delays?
+    - How much time is lost to detention?
+    - Are delays bunched in certain places, days or periods?
 
-**C. Fleet Performance:** Which trucks earn the most revenue? Which are used the most? Which have too much downtime? Which use the most fuel? What does maintenance cost for each truck? Do older trucks perform worse than newer ones?
+3.  Fleet Performance
+    - Which trucks earn the most revenue?
+    - Which are used the most?
+    - Which have too much downtime?
+    - Which use the most fuel?
+    - What does maintenance cost for each truck?
+    - Do older trucks perform worse than newer ones?
 
-**D. Driver Performance & Safety:** Which drivers have the best and worst on-time rates? How many trips does each driver complete? How productive is each driver? Which drivers have safety incidents? What percent of incidents are preventable? Which drivers, trucks and routes carry the most safety risk?
+4.  Driver Performance & Safety
+     - Which drivers have the best and worst on-time rates?
+     - How many trips does each driver complete?
+     - How productive is each driver? Which drivers have safety incidents?
+     - What percent of incidents are preventable?
+     - Which drivers, trucks and routes carry the most safety risk?
 
-**E. Profitability & Cost Efficiency:** Revenue by customer, route, truck and driver. Fuel cost and fuel efficiency. Maintenance cost. Cost per mile, revenue per mile, fuel cost per mile. Which customers and routes are most valuable? Which assets earn a lot but also cost a lot to run?
+5.  Profitability & Cost Efficiency
+     - Revenue by customer, route, truck and driver. Fuel cost and fuel efficiency. Maintenance cost. Cost per mile, revenue per mile, fuel cost per mile.
+     - Which customers and routes are most valuable?
+     - Which assets earn a lot but also cost a lot to run?
 
-### Tools used
+### Tools
 
-- **Power BI Desktop** (Model view, Report view and DAX query view)
-- **PowerPoint** (to design the page background images)
+| Tools | Purpose |
+| --- | --- |
+| Power BI | Data Modeling, DAX, Visualization |
+| PowerPoint | Design the page background images |
+
 
 ### The data (14 tables)
 
@@ -477,12 +502,7 @@ The monthly summary tables (`driver_monthly_metrics`, `truck_utilization_metrics
 ## Recommendations
 
 
-## Tools
 
-
-| Tools | Purpose |
-| --- | --- |
-| Power BI | Data Modeling, DAX measures, Visualization |
 
 
 
