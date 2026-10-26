@@ -1,8 +1,12 @@
-# Objective
+# Logistic-Operations-Analysis-and-Performance-Report
+
+
+## Objective
 
 An interactive Power BI report that shows how a trucking company performs across operations, deliveries, fleet, drivers and safety, and profitability. The aim is to give managers a clear, filterable view of the operation, so they can find where to look closer and make decisions based on data.
 
 
+---
 
 ## Table of contents
 
@@ -51,6 +55,8 @@ An interactive Power BI report that shows how a trucking company performs across
      - Revenue by customer, route, truck and driver. Fuel cost and fuel efficiency. Maintenance cost. Cost per mile, revenue per mile, fuel cost per mile.
      - Which customers and routes are most valuable?
      - Which assets earn a lot but also cost a lot to run?
+
+---
 
 ### Tools
 
