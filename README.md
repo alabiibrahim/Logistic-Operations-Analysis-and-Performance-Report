@@ -84,21 +84,16 @@ A Power BI report for a trucking (logistics) company. It answers five groups of 
 | Power BI | Data Modeling, DAX, Visualization |
 | PowerPoint | Design the page background images |
 
+---
 
-### The data (14 tables)
+## Build the data model
 
-| Table | What it holds |
-|---|---|
-| `trips` | One row per trip: driver, truck, trailer, miles, hours, fuel used, idle time, status |
-| `loads` | One row per load: customer, route, revenue, fuel surcharge, extra charges |
-| `delivery_events` | Pickup and delivery stops: scheduled vs actual time, on-time flag, detention minutes |
-| `fuel_purchases` | Fuel buys: gallons, price, cost, truck, driver, trip |
-| `maintenance_records` | Repair jobs: cost, labor, parts, downtime hours, truck |
-| `safety_incidents` | Accidents and claims: damage costs, flags (preventable, at fault, injury), driver, truck, trip |
-| `truck_utilization_metrics` | One row per truck per month: utilization rate, miles, downtime |
-| `driver_monthly_metrics` | One row per driver per month: trips, miles, revenue, on-time rate |
-| `drivers`, `trucks`, `trailers` | Lists of people and equipment |
-| `customers`, `routes`, `facilities` | Lists of who we haul for, where we drive, and where we stop |
+ - **Dimension tables** are lists of things: drivers, trucks, customers, routes, facilities, dates.
+ - **Fact tables** record events: trips, deliveries, fuel purchases, repairs, incidents.
+ - All are **one-to-many**, filter direction **single** (from the list table to the event table).
+ - Data consists of **14 tables**.
+
+![v1](asset/data_modeling.png)
 
 ### Facts about the data we confirmed with checks
 
@@ -110,26 +105,6 @@ A Power BI report for a trucking (logistics) company. It answers five groups of 
 - `utilization_rate` is stored as a fraction (a value of 1.0 means 100%) and ranges from 0.387 to 1.484, so some rows are above 100%.
 - 150 drivers exist, 125 of them have trips. There are 170 incident rows.
 
----
-
-## 2. The rules we followed
-
-1. **Three steps, in order:** (1) data model, (2) DAX measures, (3) visuals.
-2. **One section at a time.** Finish A completely (measures, checks, visuals) before starting B.
-3. **One clean DAX file per section.** One `DEFINE` block, one `EVALUATE` at the end. All measures are added in one go, never pasted one by one.
-4. **Every measure has a comment** that explains *why* it is written that way.
-5. **Check the numbers** before moving on. Each file ends with a "verification row" with known answers.
-6. **The report must be interactive.** Slicers and clicks change every chart, so measures are written to react to filters.
-
----
-
-## Build the data model
-
- - **Dimension tables** are lists of things: drivers, trucks, customers, routes, facilities, dates.
- - **Fact tables** record events: trips, deliveries, fuel purchases, repairs, incidents.
- - All are **one-to-many**, filter direction **single** (from the list table to the event table).
-
-![v1](asset/data_modeling.png)
 
 ### 3.5 Why it is built this way
 
