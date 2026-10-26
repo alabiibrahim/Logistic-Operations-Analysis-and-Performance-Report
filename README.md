@@ -1,4 +1,4 @@
-# Logistics Operations Dashboard (Power BI)
+# Logistic-Operations-and-Report-Analysis
 
 A step-by-step record of how this report was built, from raw tables to finished pages.
 
@@ -146,9 +146,12 @@ A Power BI report for a trucking (logistics) company. It answers five groups of 
 
 ## 5. Step 3: Build the visuals
 
-### 5.1 Pages
 
-There are **nine report pages**: D has two pages, and each of A, B, C, E has one pages.
+There are **6 report pages**: D has two pages, and each of A, B, C, E has one pages.
+
+Why B is separate: it works on **delivery date**, while the other pages work on **dispatch date**. If both were active, their selections would overlap and the numbers would change.
+
+Why E has no customer, route or driver slicers: any of those filters would flip maintenance cost from actual to estimated for every chart on the page.
 
 | Page | Name |
 |---|---|
@@ -159,140 +162,6 @@ There are **nine report pages**: D has two pages, and each of A, B, C, E has one
 | D2 | Driver Safety |
 | E1 | Profitability & Cost Efficiency |
 
-
-
-Why B is separate: it works on **delivery date**, while the other pages work on **dispatch date**. If both were active, their selections would overlap and the numbers would change.
-
-Why E has no customer, route or driver slicers: any of those filters would flip maintenance cost from actual to estimated for every chart on the page.
-
-### 5.3 Section A: Overall Operations (1 page)
-
-| Visual | Type | Fields |
-|---|---|---|
-| KPI cards (5) | Card | `[Completed Trips]`, `[Total Revenue]`, `[On-Time Delivery %]`, `[Truck Utilization %]`, `[Revenue per Mile]`. First four use the matching Trend Label and Trend Color measures and a "Top 1" filter on `dim_date[Month Start]` by `[Latest Month With Data]` |
-| Revenue growth vs service quality | Line and clustered column | X `dim_date[Month Start]`; columns `[Total Revenue]`; line `[On-Time Delivery %]` |
-| On-time vs target | Line | `[On-Time Delivery %]`, `[On-Time % Rolling 3M]`, `[On-Time Target Line]` |
-| Volume vs yield | Line and clustered column | Columns `[Completed Trips]`; line `[Revenue per Mile]` |
-| Utilization vs idle waste | Line | `[Truck Utilization %]`, `[Idle Time %]` |
-| Asset productivity | Clustered column | `[Trips per Active Truck]`, `[Trips per Active Driver]` |
-| KPI scorecard | Matrix | Rows `Month Start` (newest first); revenue, trips, on-time and utilization with their MoM measures |
-
-### 5.4 Section B: Delivery Performance (2 pages)
-
-**B1**
-
-| Visual | Type | Fields |
-|---|---|---|
-| KPI cards (4) | Card | `[On-Time Delivery %]`, `[Late Deliveries]`, `[Detention Hours]`, `[Detention Rate %]` |
-| Callouts (5) | Card | `[Worst Day (Late %)]`, `[Worst Facility (Late %)]`, `[Worst Customer (Late %)]`, `[Worst Route (Late %)]`, `[Best Route (Late %)]` |
-| Delay trend | Line and clustered column | X `dim_delivery_date[Month Start]`; columns `[Late Deliveries]`; line `[On-Time Delivery %]` |
-| Pickup vs delivery | Clustered column | `[Pickup On-Time %]`, `[On-Time Delivery %]` |
-| Detention trend | Line and clustered column | Columns `[Detention Hours]`; line `[Avg Detention per Stop (min)]` |
-| Weekday pattern | Column | X `dim_delivery_date[Day Name]`; Y `[On-Time Delivery %]`; constant line from `[On-Time % (All Days)]` |
-| Seasonal heat map | Matrix | Rows `Day Name`; columns `Month`; values `[Late Delivery %]`; color gradient |
-
-**B2**
-
-| Visual | Type | Fields |
-|---|---|---|
-| Worst facilities | Bar | Y `facilities[facility_name]`; X `[Stop On-Time %]`; Bottom 10; filter `[Meets Min Stops]` = 1; color `[Stop vs Network Color]` |
-| Detention hot spots | Bar | Y `facility_name`; X `[Detention Hours]`; Top 10 |
-| Facility map | Bubble map | Latitude and longitude from `facilities`; size `[Late Stops]` |
-| Worst routes | Bar | Y `routes[route_label]`; X `[On-Time Delivery %]`; Bottom 10; filter `[Meets Min Deliveries]` = 1; color `[Delivery vs Network Color]` |
-| Best routes | Bar | Same fields; Top 10 |
-| Customers most affected | Bar | Y `customers[customer_name]`; X `[Late Deliveries]`; Top 10 |
-| Detention vs lateness | Scatter | X `[Avg Detention per Stop (min)]`; Y `[Stop On-Time %]`; size `[Total Stops]`; details `facility_name` |
-| Does detention cause lateness? | Clustered column | `[Stop Late % (Detained)]`, `[Stop Late % (No Detention)]` |
-
-### 5.5 Section C: Fleet Performance (2 pages)
-
-**C1**
-
-| Visual | Type | Fields |
-|---|---|---|
-| KPI cards (7) | Card | `[Active Trucks]`, `[Revenue per Active Truck]`, `[Truck Utilization %]`, `[Over-Utilized %]`, `[Downtime Hours]`, `[Maintenance Cost]`, `[Fleet MPG]` |
-| Callouts (5) | Card | `[Top Revenue Truck]`, `[Highest Utilization Truck]`, `[Most Downtime Truck]`, `[Highest Fuel Use Truck]`, `[Highest Maintenance Cost Truck]` |
-| Top revenue trucks | Bar | Y `trucks[truck_label]`; X `[Total Revenue]`; Top 10 |
-| Highest utilization | Bar | X `[Truck Utilization %]`; Top 10; color `[Utilization vs Fleet Color]` |
-| Lowest utilization | Bar | Same fields; Bottom 10 |
-| Excessive downtime | Bar | X `[Downtime Hours]`; Top 10; color `[Downtime Color]` |
-| Revenue vs downtime | Scatter | X `[Downtime Hours]`; Y `[Total Revenue]`; size `[Total Miles]`; details `truck_label` |
-
-**C2**
-
-| Visual | Type | Fields |
-|---|---|---|
-| Fuel hogs | Bar | X `[Total Fuel Gallons]`; Top 10 |
-| Least efficient | Bar | X `[Fleet MPG]`; Bottom 10; color `[MPG vs Fleet Color]` |
-| Maintenance cost by truck | Stacked bar | `[Labor Cost]`, `[Parts Cost]`; Top 10 by `[Maintenance Cost]` |
-| Maintenance by type | Bar | Y `maintenance_records[maintenance_type]`; X `[Maintenance Cost]` |
-| Old vs new trucks | Matrix | Rows `trucks[truck_age_band]`; active trucks, revenue per truck, utilization, MPG, maintenance cost per mile, downtime per 1,000 miles |
-| Age curve | Line | X `trucks[truck_age_years]`; Y `[Maintenance Cost per Mile]` |
-| Cost and downtime trend | Line and clustered column | Columns `[Maintenance Cost]`; line `[Downtime Hours]` |
-| Truck leaderboard | Matrix | Rows `truck_label`; revenue, miles, utilization, downtime, fuel, MPG, maintenance cost |
-
-### 5.6 Section D: Driver Performance & Safety (2 pages)
-
-**D1: performance**
-
-| Visual | Type | Fields |
-|---|---|---|
-| KPI cards (4) | Card | `[Active Drivers]`, `[Trips per Active Driver]`, `[Revenue per Active Driver]`, `[On-Time Delivery %]` |
-| Callouts (7) | Card | `[Best On-Time Driver]`, `[Worst On-Time Driver]`, `[Most Productive Driver]`, `[Most Incidents Driver]`, `[Highest Risk Driver]`, `[Highest Risk Truck]`, `[Highest Risk Route]` |
-| Best on-time drivers | Bar | Y `drivers[driver_label]`; X `[On-Time Delivery %]`; Top 10; filter `[Meets Min Deliveries]` = 1 |
-| Worst on-time drivers | Bar | Same fields; Bottom 10; color `[Driver vs All Color]` |
-| Productivity vs punctuality | Scatter | X `[Trips per Active Month]`; Y `[On-Time Delivery %]`; size `[Total Revenue]` |
-| Driver leaderboard | Matrix | Rows `driver_label`; trips, trips per active month, miles, revenue, on-time %, idle %, MPG, incidents |
-
-**D2: safety**
-
-| Visual | Type | Fields |
-|---|---|---|
-| KPI cards (4) | Card | `[Total Incidents]`, `[Preventable %]`, `[Incidents per 1M Miles]`, `[Incident-Free Driver %]` |
-| Incident trend | Line and clustered column | Columns `[Total Incidents]`; line `[Incidents per 1M Miles]` |
-| Incident types | Bar | Y `safety_incidents[incident_type]`; X `[Total Incidents]` |
-| Preventable share | Donut | Legend `safety_incidents[preventable_flag]`; values `[Total Incidents]` |
-| Highest-risk drivers | Bar | X `[Incidents per 1M Miles]`; Top 5; filter `[Meets Min Miles]` = 1; color `[Risk vs Network Color]` |
-| Highest-risk trucks | Bar | Same, by `trucks[truck_label]` |
-| Highest-risk routes | Bar | Same, by `routes[route_label]` |
-| Does experience matter? | Matrix | Rows `drivers[experience_band]`; on-time %, trips per month, MPG, incidents per 1M miles, preventable % |
-
-### 5.7 Section E: Profitability & Cost Efficiency (2 pages)
-
-**E1: overview**
-
-| Visual | Type | Fields |
-|---|---|---|
-| KPI cards (8) | Card | `[Total Revenue]`, `[Operating Cost]`, `[Contribution Margin]`, `[Contribution Margin %]`, `[Revenue per Mile]`, `[Cost per Mile]`, `[Fuel Cost per Mile]`, `[Fleet MPG]` |
-| Callouts (7) | Card | `[Most Valuable Customer]`, `[Lowest-Margin Customer]`, `[Most Valuable Route]`, `[Lowest-Margin Route]`, `[Most Valuable Driver]`, `[Most Profitable Truck]`, `[Costliest Truck per Mile]` |
-| Where each revenue dollar goes | Waterfall | Category `'Margin Bridge'[Step]`; Y `[Margin Bridge Value]` |
-| Revenue vs cost trend | Line and clustered column | Columns `[Total Revenue]`; lines `[Operating Cost]`, `[Contribution Margin]` |
-| Unit economics | Line | `[Revenue per Mile]`, `[Cost per Mile]`, `[Fuel Cost per Mile]` |
-| Cost mix | Stacked column | `[Fuel Cost]`, `[Maintenance Cost (Used)]`, `[Trip Damage Cost]` |
-| Fuel price vs efficiency | Line | `[Fuel Price per Gallon]`; second axis `[Fleet MPG]` |
-
-**E2: customers, routes, assets**
-
-| Visual | Type | Fields |
-|---|---|---|
-| Most valuable customers | Bar | Y `customers[customer_name]`; X `[Contribution Margin]`; Top 10; color `[Margin vs Network Color]` |
-| Customer size vs margin | Scatter | X `[Total Revenue]`; Y `[Contribution Margin %]`; size `[Total Miles]`; filter `[Meets Min Trips]` = 1 |
-| Lowest-margin routes | Bar | Y `routes[route_label]`; X `[Contribution Margin %]`; Bottom 10; filter `[Meets Min Trips]` = 1 |
-| Asset quadrant | Scatter | X `[Total Revenue]`; Y `[Cost per Mile]`; size `[Total Miles]`; details `truck_label`; data color `[Asset Quadrant Color]` |
-| Truck leaderboard | Matrix | Rows `truck_label`; revenue, cost, margin, margin %, cost per mile, fuel cost per mile, maintenance cost per mile, quadrant |
-
-The asset quadrant sorts each truck into four boxes: revenue at or above the fleet average or below it, and cost per mile above the fleet's or not.
-
----
-
-
-### 6.5 Where visuals sit inside a panel
-
-- **Tiles (charts and tables):** the visual sits inside the panel with an 8 px inset on the sides and bottom and 56 px at the top, which leaves room for the static title and subtitle. Visual size = panel width − 16, panel height − 64.
-- **KPI cards, callouts, slicers and the navigator:** the visual fills the whole panel (same X, Y, width and height).
-- Turn **off** each visual's own title, so the background title is not shown twice.
-
----
 
 ## 7. How we checked our work
 
@@ -311,7 +180,7 @@ Every section file ends with one `EVALUATE ROW(...)` that returns checking numbe
 
 The monthly summary tables (`driver_monthly_metrics`, `truck_utilization_metrics`) were compared with the base tables for information only. They were not used as the source for totals.
 
----
+
 
 ## 8. Problems we hit and how we fixed them
 
@@ -356,7 +225,7 @@ The monthly summary tables (`driver_monthly_metrics`, `truck_utilization_metrics
 
 
 
-# Logistic-Operations-and-Report-Analysis
+
 
 
 
