@@ -8,6 +8,14 @@ A step-by-step record of how this report was built, from raw tables to finished 
 ---
 
 ## Table of contents
+- [Question](#Questions)
+- [Processing](#Processing)
+- [Methodology](#Methodology)
+- [Visualization](#Visualization)
+- [Insights](#Insights)
+- [Recommendations](#Recommendations)
+- [Tools](#Tools)
+
 
 1. [What this project is](#1-what-this-project-is)
 2. [The rules we followed](#2-the-rules-we-followed)
@@ -186,50 +194,10 @@ Power BI shows inactive relationships as dotted lines.
 
 ## 4. Step 2: Write the DAX measures
 
-### 4.1 What is a measure?
-
-A **measure** is a calculation that gives a different answer depending on what is selected. "Total Revenue" gives the company total. Click one truck, and the same measure gives that truck's revenue. That is how the report stays interactive.
-
-**DAX** is the formula language Power BI uses for measures.
-
-### 4.2 How measures were added
-
-1. Open **DAX query view** in Power BI Desktop.
-2. Open a new query tab and paste one whole section file (for example `section_a_measures.dax`). Paste it alone, never mixed with older snippets.
-3. Click **Update model** above the `DEFINE` line. This writes all the measures into the model at once.
-4. Press **Run**. The file ends with one `EVALUATE ROW(...)` that shows the verification numbers.
-
-Every file looks like this:
 
 
-### 4.3 Settings (config measures)
 
-Business rules live in small "config" measures at the top of each file, so one edit changes every measure that uses them.
 
-| Config measure | Value | Used for |
-|---|---|---|
-| `_Cfg Completed Status` | `"Completed"` | Which trips count as finished |
-| `_Cfg Delivery Event Type` | `"Delivery"` | Which stops are deliveries |
-| `_Cfg Pickup Event Type` | `"Pickup"` | Which stops are pickups |
-| `_Cfg On-Time Target` | `0.95` | The on-time goal (a placeholder) |
-| `_Cfg Min Volume` | `30` | Smallest number of trips, deliveries or stops allowed in a ranking |
-| `_Cfg Min Miles` | `10000` | Smallest mileage allowed in a safety-risk ranking |
-| `_Cfg Excess Downtime Factor` | `1.25` | A truck has "excess" downtime if it is 25% above the fleet average |
-| `_Cfg Flag Yes Value` | `TRUE ()` | What "yes" looks like in the flag columns |
-| `_Cfg Pts At Fault`, `_Cfg Pts Preventable`, `_Cfg Pts Injury` | `1`, `1`, `3` | Extra points in the safety Risk Points score |
-| `_Cfg Include Incident Cost` | `1` | `1` counts incident damage as a running cost, `0` leaves it out |
-
-### 4.4 What each section's file contains
-
-| Section | File | Measures | Main groups |
-|---|---|---|---|
-| A | `section_a_measures.dax` | 49 | Volume, revenue, on-time delivery, utilization and efficiency, month-over-month trends |
-| B | `section_b_measures.dax` | 34 | Late rate, pickups, stops, detention, concentration shares, callout cards |
-| C | `section_c_measures.dax` | 34 | Revenue per truck, utilization, downtime, fuel, maintenance, callout cards |
-| D | `section_d_measures.dax` | 41 | Driver on-time, productivity, safety counts, incident cost, risk per million miles, callout cards |
-| E | `section_e_measures.dax` | 33 | Fuel cost, maintenance (actual and estimated), damage, margin, cost per mile, truck quadrants, waterfall, callout cards |
-
-**Total: 191 measures.**
 
 ### 4.5 Key definitions
 
@@ -249,49 +217,24 @@ Business rules live in small "config" measures at the top of each file, so one e
   - when a customer, route, driver or trailer filter is active, the measure switches to an **estimate** = that slice's miles × the network's maintenance cost per mile. The estimates add back to the actual total.
 - **Callout cards:** text measures such as "Worst Day" or "Most Valuable Customer". They update with the slicers and ignore groups below the minimum volume.
 
-### 4.6 Number formats
-
-| Format | Used for |
-|---|---|
-| `#,0` | Counts (trips, stops, incidents) |
-| `$#,0` | Money totals |
-| `$0.00` | Money per mile or per gallon |
-| `0.0%` | Rates and shares |
-| `+0.0%;-0.0%` | Gaps and point changes |
-| `#,0.0` or `0.0` | Averages, hours, rates per million miles |
-
 ---
 
 ## 5. Step 3: Build the visuals
 
 ### 5.1 Pages
 
-There are **nine report pages**: A has one page, and each of B, C, D and E has two.
+There are **nine report pages**: D has two pages, and each of A, B, C, E has one pages.
 
 | Page | Name |
 |---|---|
 | A | Overall Operations |
 | B1 | Delivery Performance (overview and timing) |
-| B2 | Delivery Hot Spots (facilities, routes, customers) |
 | C1 | Fleet Performance (revenue, utilization, downtime) |
-| C2 | Fleet Costs & Age (fuel, maintenance, age) |
 | D1 | Driver Performance |
 | D2 | Driver Safety |
-| E1 | Profitability & Cost Efficiency (overview) |
-| E2 | Customers, Routes & Assets |
+| E1 | Profitability & Cost Efficiency |
 
-### 5.2 Slicers and syncing
 
-Open **View > Sync slicers**. For each slicer, tick **Sync** on the pages where it should filter.
-
-| Slicer | Pages |
-|---|---|
-| `dim_date[Year]`, `dim_date[Quarter]` | A, C, D, E (not B) |
-| `dim_delivery_date[Year]`, `[Quarter]` | B only |
-| `trucks[make]`, `trucks[home_terminal]` | C and E |
-| `customers[customer_name]` | A and B only |
-| `facilities[facility_type]` | B only |
-| `drivers[employment_status]`, `drivers[home_terminal]` | D only |
 
 Why B is separate: it works on **delivery date**, while the other pages work on **dispatch date**. If both were active, their selections would overlap and the numbers would change.
 
@@ -417,57 +360,6 @@ The asset quadrant sorts each truck into four boxes: revenue at or above the fle
 
 ---
 
-## 6. Page design and background images
-
-### 6.1 Page size and grid
-
-- **Page size:** custom **1920 × 1080 px** (16:9) on every page. Set it in Format page > Canvas settings > Custom.
-- **Why not the default 1280 × 720:** 1920 × 1080 fills a normal monitor at 100%, so text stays readable. Keeping every page the same size also lets one design be reused.
-- **Grid:** 32 px side margins, 16 px gaps, 12 columns of 140 px. A span of 3 columns is 452 px, 4 is 608, 5 is 764, 6 is 920, 7 is 1,076 and 12 is 1,856.
-- **Fixed header on every page:** title on the left, page-navigator panel at X 812 and Y 24 (1,076 × 72), four slicer panels at Y 112 (452 × 56 each), content starting at Y 184.
-
-Section A as an example:
-
-| Element | X | Y | Width × Height |
-|---|---|---|---|
-| Title | 32 | 24 | 764 × 72 |
-| Page navigator | 812 | 24 | 1,076 × 72 |
-| 4 slicers | 32, 500, 968, 1,436 | 112 | 452 × 56 each |
-| 5 KPI cards | 32, 406, 780, 1,154, 1,528 | 184 | 358 × 120 (last one 360 wide) |
-| Revenue growth vs service quality | 32 | 320 | 1,076 × 250 |
-| On-time vs target | 1,124 | 320 | 764 × 250 |
-| Volume vs yield, Utilization vs idle, Asset productivity | 32, 656, 1,280 | 586 | 608 × 250 each |
-| KPI scorecard | 32 | 852 | 1,856 × 204 |
-
-The exact X, Y, width and height of **every** panel and visual on all nine pages are in `visual_placement.csv`.
-
-### 6.2 Colors and fonts
-
-| Use | Color |
-|---|---|
-| Page background | `#EEF1F4` |
-| Panels | White, 1 px outline `#E3E8ED`, 8 px corners |
-| Main text | `#1B2A3A` |
-| Muted text | `#4B5866` |
-| Accent colors | Teal `#0F4C5C` and `#0F766E`, amber `#B45309`, red `#B3261E`, green `#2E7D32` |
-| Font | Segoe UI |
-
-### 6.3 Making the background image in PowerPoint
-
-1. Set the slide size to **20 in × 11.25 in** (Design > Slide Size > Custom). PowerPoint exports at 96 pixels per inch, so this gives exactly 1920 × 1080.
-2. Divide pixels by 96 to get inches. Example: 1,076 × 250 px at (32, 320) is 11.21 × 2.60 in at (0.33, 3.33).
-3. Draw only the parts that never change: the background color, the white rounded panels, and each panel's static title and subtitle.
-4. Do **not** draw data, charts or tabs.
-5. Export: File > Export > Change File Type > PNG > **Just This One**. Check the size is 1920 × 1080.
-
-### 6.4 Loading it into Power BI
-
-1. Format page > Canvas settings: Custom, 1920 × 1080.
-2. Format page > Canvas background > Image > Add image. Set Image fit to **Fit** and Transparency to **0%**.
-3. Set **Wallpaper** to `#EEF1F4`.
-4. For each visual, turn **Effects > Background** off so the panel shows through.
-5. Type each visual's X, Y, Width and Height from `visual_placement.csv` (Format visual > General > Properties).
-6. Use Insert > Buttons > Navigator > Page navigator for the A to E tabs.
 
 ### 6.5 Where visuals sit inside a panel
 
@@ -511,38 +403,6 @@ The monthly summary tables (`driver_monthly_metrics`, `truck_utilization_metrics
 
 ---
 
-## 9. Project files
-
-Suggested repository layout:
-
-```text
-.
-├── README.md                          (this file)
-├── dax/
-│   ├── section_a_measures.dax
-│   ├── section_b_measures.dax
-│   ├── section_c_measures.dax
-│   ├── section_d_measures.dax
-│   └── section_e_measures.dax
-├── backgrounds/
-│   ├── A_Overall_Operations.png
-│   ├── B1_Delivery_Overview.png
-│   ├── B2_Delivery_Hot_Spots.png
-│   ├── C1_Fleet_Revenue_Utilization.png
-│   ├── C2_Fleet_Fuel_Maintenance_Age.png
-│   ├── D1_Driver_Performance.png
-│   ├── D2_Driver_Safety.png
-│   ├── E1_Profitability_Overview.png
-│   ├── E2_Customers_Routes_Assets.png
-│   ├── Dashboard_Backgrounds_A_D_E.pptx
-│   ├── Dashboard_Backgrounds_B_C.pptx
-│   └── visual_placement.csv
-└── report/
-    └── logistics_dashboard.pbix
-```
-
----
-
 ## 10. Rebuild checklist
 
 **Model**
@@ -567,41 +427,12 @@ Suggested repository layout:
 
 ---
 
-## 11. Glossary
 
-| Word | Simple meaning |
-|---|---|
-| **DAX** | The formula language of Power BI |
-| **Measure** | A calculation that changes when you click or filter |
-| **Calculated column** | A new column added to a table, worked out row by row |
-| **Calculated table** | A whole new table made from a formula |
-| **Relationship** | A link between two tables through a shared ID column |
-| **Dimension table** | A list of things (drivers, trucks, dates) |
-| **Fact table** | A table of events (trips, fuel buys, incidents) |
-| **Slicer** | A filter box on the report page |
-| **KPI** | A key number that shows how things are going |
-| **On time** | A stop marked on time in `on_time_flag` |
-| **Detention** | Extra waiting time at a stop, recorded in minutes |
-| **Utilization** | How much of a truck's available capacity was used |
-| **MPG** | Miles per gallon of fuel |
-| **MoM** | Month over month: this month compared with last month |
-| **Rolling 3M** | The last three whole months, ending now |
-| **Per 1M miles** | A rate worked out per one million miles driven |
-| **Contribution margin** | Revenue minus fuel, maintenance and incident damage. Not net profit |
-| **DEFINE / EVALUATE** | The two parts of a DAX query: DEFINE creates measures, EVALUATE shows a result |
 
 
 
 # Logistic-Operations-and-Report-Analysis
 
-
-- [Question](#Questions)
-- [Processing](#Processing)
-- [Methodology](#Methodology)
-- [Visualization](#Visualization)
-- [Insights](#Insights)
-- [Recommendations](#Recommendations)
-- [Tools](#Tools)
 
 
 ## Question
