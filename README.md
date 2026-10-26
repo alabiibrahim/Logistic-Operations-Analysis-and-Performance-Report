@@ -25,20 +25,20 @@
 ![v1](asset/01.png)
 
 
-**Delivery Perdormance**
+**Delivery Performance**
 ![v1](asset/02.png)
 
 
-**Fleet Perdormance**
+**Fleet Performance**
 ![v1](asset/03.png)
 
 
 
-**Driver Safety**
+**Driver Performance**
 ![v1](asset/04.png)
 
 
-**Driver Perdormance**
+**Driver Safety**
 ![v1](asset/05.png)
 
 
