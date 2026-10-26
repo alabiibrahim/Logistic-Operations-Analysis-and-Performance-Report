@@ -1,6 +1,8 @@
 # Logistic-Operations-and-Report-Analysis
 
 ## Table of contents
+
+- [Objective](#Objective)
 - [Question](#Questions)
 - [Processing](#Processing)
 - [Data model](#Data-model)
@@ -10,47 +12,31 @@
 - [Recommendations](#Recommendations)
 - [Tools](#Tools)
 
-
-1. [What this project is](#1-what-this-project-is)
- 
-4. [Step 2: Write the DAX measures](#4-step-2-write-the-dax-measures)
-5. [Step 3: Build the visuals](#5-step-3-build-the-visuals)
 7. [How we checked our work](#7-how-we-checked-our-work)
 8. [Problems we hit and how we fixed them](#8-problems-we-hit-and-how-we-fixed-them)
 9. [Project files](#9-project-files)
-10. [Rebuild checklist](#10-rebuild-checklist)
 
----
-
-## 1. What this project is
+## Objective
 
 A Power BI report for a trucking (logistics) company. It answers five groups of questions. Each group is one **section** of the report.
 
-| Section | Name | The big question |
-|---|---|---|
-| **A** | Overall Operations | How healthy and efficient is the operation? |
-| **B** | Delivery Performance | Where and why are deliveries delayed? |
-| **C** | Fleet Performance | Are we getting enough value from our trucks? |
-| **D** | Driver Performance & Safety | Which drivers perform well, and where are the safety risks? |
-| **E** | Profitability & Cost Efficiency | Where is revenue earned efficiently, and where do costs leak? |
-
 ### Questions 
 
-1.  Overall Operations
+1.  Overall Operations (How healthy and efficient is the operation?)
     - How many loads and trips are completed?
     - What is total revenue?
     - What is the on-time delivery rate?
     - How well are trucks and drivers used?
     - Are the KPIs getting better or worse over time?
 
-2.  Delivery Performance
+2.  Delivery Performance (Where and why are deliveries delayed?)
     - What percent of deliveries are on time?
     - Which facilities have the most detention and delays?
     - Which routes do best and worst? Which customers see the most delays?
     - How much time is lost to detention?
     - Are delays bunched in certain places, days or periods?
 
-3.  Fleet Performance
+3.  Fleet Performance (Are we getting enough value from our trucks?)
     - Which trucks earn the most revenue?
     - Which are used the most?
     - Which have too much downtime?
@@ -58,14 +44,14 @@ A Power BI report for a trucking (logistics) company. It answers five groups of 
     - What does maintenance cost for each truck?
     - Do older trucks perform worse than newer ones?
 
-4.  Driver Performance & Safety
+4.  Driver Performance & Safety (Which drivers perform well, and where are the safety risks?)
      - Which drivers have the best and worst on-time rates?
      - How many trips does each driver complete?
      - How productive is each driver? Which drivers have safety incidents?
      - What percent of incidents are preventable?
      - Which drivers, trucks and routes carry the most safety risk?
 
-5.  Profitability & Cost Efficiency
+5.  Profitability & Cost Efficiency (Where is revenue earned efficiently, and where do costs leak?)
      - Revenue by customer, route, truck and driver. Fuel cost and fuel efficiency. Maintenance cost. Cost per mile, revenue per mile, fuel cost per mile.
      - Which customers and routes are most valuable?
      - Which assets earn a lot but also cost a lot to run?
@@ -137,23 +123,34 @@ A Power BI report for a trucking (logistics) company. It answers five groups of 
 
 ---
 
-## 5. Step 3: Build the visuals
+## Visualization 
+ - There are **6 report pages**: D has two pages, and each of A, B, C, E has one pages.
+ - Why B is separate: it works on **delivery date**, while the other pages work on **dispatch date**. If both were active, their selections would overlap and the numbers would change.
+ - Why E has no customer, route or driver slicers: any of those filters would flip maintenance cost from actual to estimated for every chart on the page.
+
+**Overall Operations**
+![v1](asset/01.png)
 
 
-There are **6 report pages**: D has two pages, and each of A, B, C, E has one pages.
+**Delivery Performance**
+![v1](asset/02.png)
 
-Why B is separate: it works on **delivery date**, while the other pages work on **dispatch date**. If both were active, their selections would overlap and the numbers would change.
 
-Why E has no customer, route or driver slicers: any of those filters would flip maintenance cost from actual to estimated for every chart on the page.
+**Fleet Performance**
+![v1](asset/03.png)
 
-| Page | Name |
-|---|---|
-| A | Overall Operations |
-| B1 | Delivery Performance (overview and timing) |
-| C1 | Fleet Performance (revenue, utilization, downtime) |
-| D1 | Driver Performance |
-| D2 | Driver Safety |
-| E1 | Profitability & Cost Efficiency |
+
+
+**Driver Performance**
+![v1](asset/04.png)
+
+
+**Driver Safety**
+![v1](asset/05.png)
+
+
+**Profitability & Cost Efficiency**
+![v1](asset/06.png)
 
 
 ## 7. How we checked our work
@@ -188,73 +185,9 @@ The monthly summary tables (`driver_monthly_metrics`, `truck_utilization_metrics
 | Same maintenance cost on every route | Maintenance is not linked to routes, customers or drivers, so those filters were ignored | Switch to the estimated maintenance when one of those filters is active (see 4.5) |
 | Page title centered in PowerPoint | The title placeholder defaulted to center alignment | Set the placeholder alignment to left |
 
----
-
-## 10. Rebuild checklist
-
-**Model**
-- [ ] Load the 14 tables
-- [ ] Create `dim_date` and `dim_delivery_date`, mark both as date tables, set the sort-by columns
-- [ ] Create the relationships in section 3.4 and set the four inactive ones
-- [ ] Create the calculated columns and the `Margin Bridge` table in section 3.6
-- [ ] Create the empty `_Measures` table and hide its blank column
-
-**Measures** (repeat for A, then B, C, D, E, finishing each before the next)
-- [ ] New DAX query tab, paste the whole section file, click Update model, run it
-- [ ] Compare the verification row with the known values
-- [ ] Set number formats
-
-**Visuals**
-- [ ] Set every page to Custom 1920 × 1080
-- [ ] Add the page's background PNG, set Wallpaper to `#EEF1F4`
-- [ ] Place each visual using `visual_placement.csv`
-- [ ] Turn off visual backgrounds and visual titles
-- [ ] Set up the slicers and sync them as in section 5.2
-- [ ] Add the page navigator
-
----
-
-
-
-
-
-
-
-
-
-## Question
-
 
 ## Processing
 
-
-
-## Visualization
-
-**Overall Operations**
-![v1](asset/01.png)
-
-
-**Delivery Performance**
-![v1](asset/02.png)
-
-
-**Fleet Performance**
-![v1](asset/03.png)
-
-
-
-**Driver Performance**
-![v1](asset/04.png)
-
-
-**Driver Safety**
-![v1](asset/05.png)
-
-
-
-**Profitability & Cost Efficiency**
-![v1](asset/06.png)
 
 ## Insights
 
