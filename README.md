@@ -4,13 +4,14 @@
 
 - [Objective](#Objective)
 - [Question](#Questions)
+- [Tools](#Tools)
 - [Processing](#Processing)
 - [Data model](#Data-model)
 - [Methodology](#Methodology)
 - [Visualization](#Visualization)
 - [Insights](#Insights)
 - [Recommendations](#Recommendations)
-- [Tools](#Tools)
+
 
 7. [How we checked our work](#7-how-we-checked-our-work)
 8. [Problems we hit and how we fixed them](#8-problems-we-hit-and-how-we-fixed-them)
@@ -63,9 +64,11 @@ A Power BI report for a trucking (logistics) company. It answers five groups of 
 | Power BI | Data Modeling, DAX, Visualization |
 | PowerPoint | Design the page background images |
 
+
 ---
 
-## Build the data model
+
+## Data Model
 
  - **Dimension tables** are lists of things: drivers, trucks, customers, routes, facilities, dates.
  - **Fact tables** record events: trips, deliveries, fuel purchases, repairs, incidents.
@@ -73,6 +76,9 @@ A Power BI report for a trucking (logistics) company. It answers five groups of 
  - Data consists of **14 tables**.
 
 ![v1](asset/data_modeling.png)
+
+
+---
 
 ### Facts about the data we confirmed with checks
 
@@ -183,13 +189,35 @@ The monthly summary tables (`driver_monthly_metrics`, `truck_utilization_metrics
 | Utilization showed the wrong value for averages above 1 | An early rule divided by 100 whenever the average was above 1 | The data is stored as a fraction, so the measure is a plain average with no scaling |
 | Circular dependency error on `trip_damage_cost` | Two columns both used `CALCULATE` on `trips`, so each depended on the other | Write `trip_damage_cost` with `SUMX` and `FILTER` instead of `CALCULATE` |
 | Same maintenance cost on every route | Maintenance is not linked to routes, customers or drivers, so those filters were ignored | Switch to the estimated maintenance when one of those filters is active (see 4.5) |
-| Page title centered in PowerPoint | The title placeholder defaulted to center alignment | Set the placeholder alignment to left |
 
 
 ## Processing
 
 
 ## Insights
+
+**Overall Operations**
+    -
+    -
+    -
+**Delivery Performance**
+    -
+    -
+    -
+
+**Fleet Performance**
+    -
+    -
+    -
+**Driver performance & Safety**
+    -
+    -
+    -
+
+**Profitability & Cost Efficiency**
+    -
+    -
+    -
 
 
 ## Recommendations
